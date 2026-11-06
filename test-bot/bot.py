@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, Command, CommandObject  
 from aiogram.types import Message
 
 # Bot token can be obtained via https://t.me/BotFather
@@ -31,6 +31,25 @@ async def command_start_handler(message: Message) -> None:
     # Bot instance: `bot.send_message(chat_id=message.chat.id, ...)`
     await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
 
+
+@dp.message(Command("set"))
+async def command_set_handler(message: Message, command: CommandObject) -> None:
+    """
+    Этот хэндлер реагирует на команду /set
+    """
+
+    user_args = command.args  
+
+    await message.answer(f"Вы вызвали команду SET! Здесь логика сохранения данных. {user_args}")
+
+
+# Обработчик для команды /get
+@dp.message(Command("get"))
+async def command_get_handler(message: Message) -> None:
+    """
+    Этот хэндлер реагирует на команду /get
+    """
+    await message.answer("Вы вызвали команду GET! Здесь логика получения данных.")
 
 @dp.message()
 async def echo_handler(message: Message) -> None:
